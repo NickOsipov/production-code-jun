@@ -9,6 +9,7 @@ import joblib
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 
+
 def train_model(X_train: pd.DataFrame, y_train: pd.Series) -> RandomForestClassifier:
     """
     Train a Random Forest Classifier on the provided training data.

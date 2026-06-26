@@ -7,7 +7,6 @@ including data preprocessing, model training, model evaluation, and inference.
 from loguru import logger
 
 from config.variables import MODEL_PATH
-
 from src.evaluate import evaluate_model
 from src.inference import load_model, predict
 from src.preprocessing import preprocess_data

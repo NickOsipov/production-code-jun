@@ -1,0 +1,7 @@
+FROM python:3.11.4-slim-bookworm
+
+WORKDIR /app
+
+COPY scripts scripts
+
+CMD ["python3", "/app/scripts/hello_world.py"]
