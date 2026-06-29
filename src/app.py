@@ -8,6 +8,7 @@ import pandas as pd
 from flask import Flask, jsonify, request
 from loguru import logger
 
+from config.database import ENGINE
 from config.variables import MODEL_PATH, IRIS_CLASSES
 from src.inference import load_model, predict
 
@@ -54,6 +55,28 @@ def make_prediction():
 
         # Map predictions to class labels
         prediction = IRIS_CLASSES[predictions.iloc[0]]
+
+        # Insert query
+        query = f"""
+        INSERT INTO prediction_store (
+            sepal_length, 
+            sepal_width, 
+            petal_length, 
+            petal_width, 
+            predicted_class
+        )
+        VALUES (
+            {input_data['sepal_length']}, 
+            {input_data['sepal_width']}, 
+            {input_data['petal_length']}, 
+            {input_data['petal_width']}, 
+            '{prediction}'
+        )
+        """
+
+        with ENGINE.connect() as connection:
+            connection.execute(query)
+            logger.info("Prediction stored in the database successfully.")
 
         # Return predictions as JSON
         return jsonify({"predictions": prediction})

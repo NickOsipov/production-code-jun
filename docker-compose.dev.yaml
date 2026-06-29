@@ -1,0 +1,19 @@
+services:
+  flask-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flask-app
+    image: flask-app:latest
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./notebooks:/app/notebooks
+      - ./logs:/app/logs
+      - ./models:/app/models
+      - ./src:/app/src
+      - ./scripts:/app/scripts
+    env_file:
+      - .env
+    environment:
+      - MODE_ENV=dev
