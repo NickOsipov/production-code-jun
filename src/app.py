@@ -29,7 +29,7 @@ def health_check():
     -------
     JSON response indicating the health status of the application.
     """
-    return jsonify({"status": "ok"})
+    return jsonify({"status": "okay"})
 
 
 @app.route("/predict", methods=["POST"])
