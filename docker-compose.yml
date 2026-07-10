@@ -10,18 +10,34 @@ services:
     env_file:
       - .env
     depends_on:
-      - mysql-db
+      - clickhouse
 
-  mysql-db:
-    image: mysql:5.7
-    container_name: mysql-db
-    env_file:
-      - .env
+  # mysql-db:
+  #   image: mysql:5.7
+  #   container_name: mysql-db
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - mysql-db-data:/var/lib/mysql
+  #     - ./migrations/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    container_name: clickhouse
+    environment:
+      - CLICKHOUSE_DB=default
+      - CLICKHOUSE_USER=default
+      - CLICKHOUSE_PASSWORD=password
+      - CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1
     ports:
-      - "3306:3306"
+      - 8123:8123 # http
+      - 9000:9000 # tcp
     volumes:
-      - mysql-db-data:/var/lib/mysql
-      - ./migrations/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - clickhouse_data:/var/lib/clickhouse
+      - ./migrations/ch-init.sql:/docker-entrypoint-initdb.d/ch-init.sql
 
 volumes:
   mysql-db-data:
+  clickhouse_data:
